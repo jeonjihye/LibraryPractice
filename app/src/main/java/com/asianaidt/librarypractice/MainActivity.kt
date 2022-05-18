@@ -1,8 +1,11 @@
 package com.asianaidt.librarypractice
 
 import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
+import com.gun0912.tedpermission.PermissionListener
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -13,12 +16,32 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         setupEvents()
         setValues()
     }
 
     fun setupEvents(){
+
+
+        btnCall.setOnClickListener{
+//            Intent - CALL : 권한이 없어서 앱이 죽는다
+
+            val permissionListener = object : PermissionListener {
+
+                override fun onPermissionGranted() {
+//                    실제 Call Action
+                    val myUri = Uri.parse("tel:01091133538")
+                    val myIntent = Intent(Intent.ACTION_CALL,myUri)
+                    startActivity(myIntent)
+
+                }
+
+                override fun onPermissionDenied(deniedPermissions: MutableList<String>?) {
+                    Toast.makeText(this@MainActivity,"권한이 없어서 통화가 불가능합니다.",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
 
         img_profile.setOnClickListener {
             val myIntent = Intent(this,ViewPhotoActivity::class.java)
