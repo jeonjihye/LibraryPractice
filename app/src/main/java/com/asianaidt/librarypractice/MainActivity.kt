@@ -5,8 +5,11 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.gun0912.tedpermission.PermissionListener
+import com.gun0912.tedpermission.normal.TedPermission
 import kotlinx.android.synthetic.main.activity_main.*
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
     // 안드로이드 빌드도구
@@ -28,6 +31,7 @@ class MainActivity : AppCompatActivity() {
 
             val permissionListener = object : PermissionListener {
 
+//               1. 실제 Call
                 override fun onPermissionGranted() {
 //                    실제 Call Action
                     val myUri = Uri.parse("tel:01091133538")
@@ -41,6 +45,12 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
+//            2. 실제 권한요청
+            TedPermission.create()
+                .setPermissionListener( permissionListener)
+                .setPermissions(android.Manifest.permission.CALL_PHONE)
+                .check()
+
         }
 
         img_profile.setOnClickListener {
@@ -48,7 +58,9 @@ class MainActivity : AppCompatActivity() {
             startActivity(myIntent)
         }
     }
-    fun setValues(){
-
+    fun setValues() {
+        Glide.with(this)
+            .load("https://img.insight.co.kr/static/2020/08/03/700/8vjgm707xl34n29lp4ut.jpg")
+            .into(imgWeb)
     }
 }
